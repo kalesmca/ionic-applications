@@ -25,13 +25,12 @@
     <ion-card-header>
       <ion-card-title>Entry</ion-card-title>
       <ion-card-subtitle>
-        <ion-datetime displayFormat="MM/DD/YYYY" [(ngModel)]="myDate" placeholder="selec Date"></ion-datetime>
+        <ion-datetime displayFormat="DD/MM/YYYY" [(ngModel)]="invoice.invoiceDate" placeholder="selec Date">
+        </ion-datetime>
       </ion-card-subtitle>
-
     </ion-card-header>
 
     <ion-card-content>
-
       <ion-grid>
         <ion-row>
           <ion-col>
@@ -57,54 +56,62 @@
         <ion-row>
           <ion-col>
             <ion-item>
-              <ion-select placeholder="Product">
-                <ion-select-option value="female">Female</ion-select-option>
-                <ion-select-option value="male">Male</ion-select-option>
-              </ion-select>
+              <ion-label position="floating">Price</ion-label>
+              <ion-input [(ngModel)]="entry.price"></ion-input>
             </ion-item>
           </ion-col>
           <ion-col>
             <ion-item>
-              <ion-label position="floating">Floating Label</ion-label>
-              <ion-input></ion-input>
+              <ion-label position="floating">Quantity</ion-label>
+              <ion-input [(ngModel)]="entry.qty" (change)="entry.amt= entry.price * entry.qty"></ion-input>
             </ion-item>
           </ion-col>
           <ion-col>
             <ion-item>
-              <ion-label position="floating">Floating Label</ion-label>
-              <ion-input></ion-input>
-            </ion-item>
-          </ion-col>
-          <ion-col>
-            <ion-item>
-              <ion-label position="floating">Floating Label</ion-label>
-              <ion-input></ion-input>
-            </ion-item>
-          </ion-col>
-          <ion-col>
-            <ion-item>
-              <ion-label position="floating">Floating Label</ion-label>
-              <ion-input></ion-input>
-            </ion-item>
-          </ion-col>
-          <ion-col>
-            <ion-item>
-              <ion-label position="floating">Floating Label</ion-label>
-              <ion-input></ion-input>
+              <ion-label position="floating">Amount</ion-label>
+              <ion-input [(ngModel)]="entry.amt" disabled></ion-input>
             </ion-item>
           </ion-col>
 
         </ion-row>
         <ion-row>
-          <ion-col size="1">
-            <ion-button shape="round" color="primary">Add</ion-button>
+          <ion-col size="4">
+            <ion-button shape="round" color="primary" (click)="addItem()">Add</ion-button>
           </ion-col>
-          <ion-col size="1">
-            <ion-button shape="round" color="primary">Clear</ion-button>
+          <ion-col size="4">
+            <ion-button shape="round" color="primary" (click)="clear()">Clear</ion-button>
           </ion-col>
         </ion-row>
       </ion-grid>
-
     </ion-card-content>
   </ion-card>
+  <ion-card *ngIf="invoice.entryList.length">
+    <ion-card-header>
+      <ion-card-title>Preview</ion-card-title>
+      <ion-card-subtitle>Total Amt: {{invoice.invoiceAmt}}</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      <table id="customers">
+        <thead>
+          <tr>
+            <th *ngFor="let item of constants.entryColumns">
+              {{item.name}}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of invoice.entryList; let i=index">
+            <td>{{i}}</td>
+            <td>{{item.product}}</td>
+            <td>{{item.type}}</td>
+            <td>{{item.price}}</td>
+            <td>{{item.qty}}</td>
+            <td>{{item.amt}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </ion-card-content>
+  </ion-card>
+
+
 </ion-content>
